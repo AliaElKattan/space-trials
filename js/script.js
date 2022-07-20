@@ -627,6 +627,8 @@ function loop() {
 	// updatePlane();
 	updateCamera();
 
+	handleOrientation();
+
 	// explosion();
 
 	// render the scene
