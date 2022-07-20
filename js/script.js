@@ -489,7 +489,7 @@ function handleMouseDown(event) {
 
 	for(let i=0;i<=ntrash;i++) {
 
-		trash[i].mesh.scale.set(.5,.5,.5);
+		// trash[i].mesh.scale.set(.5,.5,.5);
 
 		for(let j=0;j<=10;j++) {
 			let d = new THREE.Mesh(geom,mat);
@@ -627,7 +627,7 @@ function loop() {
 	// updatePlane();
 	updateCamera();
 
-	explosion();
+	// explosion();
 
 	// render the scene
 	renderer.render(scene, camera);
