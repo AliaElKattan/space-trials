@@ -1,0 +1,123 @@
+#world {
+/*position:  absolute;*/
+width: 100%;
+height: 100%;
+overflow:  hidden;
+/*background:  linear-gradient(#03041c, #362600);	*/
+overflow-x:  hidden;
+z-index: -1;
+}
+
+#canvas {
+	width:  100%;
+}
+
+
+
+#lives {
+top: 0px;
+width: 100%;
+/*padding: 10px;*/
+box-sizing: border-box;
+text-align: center;
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+user-select: none;
+pointer-events: none;
+z-index: 1;
+}
+
+#lives p {
+color:  white;
+font-family:  Courier New, monospace;
+font-size:  1.3rem;
+position: absolute;
+text-align:  left;
+padding-left:  1.8rem;
+}
+
+#settings {
+background-color:  red;
+top: 0px;
+width: 100%;
+/*padding: 10px;*/
+box-sizing: border-box;
+text-align: center;
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+user-select: none;
+pointer-events: none;
+z-index: 2;
+}
+
+#settings p {
+color:  white;
+font-family:  Courier New, monospace;
+font-size:  1.3rem;
+position: absolute;
+text-align:  right;
+padding-left:  90%;
+
+}
+
+#card{
+top: 0px;
+width: 100%;
+background-color:  red;
+/*padding: 10px;*/
+box-sizing: border-box;
+text-align: center;
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+user-select: none;
+pointer-events: none;
+z-index: 1;
+display:  none;
+}
+
+#cardCrashed {
+top: 0px;
+width: 100%;
+background-color:  red;
+/*padding: 10px;*/
+box-sizing: border-box;
+text-align: center;
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+user-select: none;
+pointer-events: none;
+z-index: 1;
+display:  none;
+}
+
+
+#text {
+background-color:  rgb(50,50,50,.8);
+position: absolute;
+text-align:  center;
+margin-left:  25%;
+width:  50%;
+height:  50%;
+margin-top: 10%;
+padding-top: 1%;
+}
+
+
+#text h3, p{
+	padding-left: 5%;
+	padding-right:  5%;
+	color:  white;
+	font-family:  Courier New, monospace;
+}
+
+#text h3 {
+	font-size:  1.7rem;
+}
+
+#text p {
+	font-size:  1.2rem;
+}
