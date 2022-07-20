@@ -35,10 +35,23 @@ document.addEventListener('mouseup', handleMouseUp, false);
 document.addEventListener('keydown', handleKeys, false);
 
 
-document.addEventListener('deviceorientation', handleOrientation, true);
+// window.addEventListener('devicemotion', handleMotion, true);
 
 
 loop();
+}
+
+function handleMotion(event) {
+	// let absolute = event.rotationRate.absolute;
+ 	let alpha    = event.RotationRate.alpha;
+ 	let beta     = event.RotationRate.beta;
+  	let gamma    = event.RotationRate.gamma;
+
+  	camera.rotation.x = beta;
+  	camera.rotation.y = gamma;
+  	camera.rotation.z = alpha;
+
+  	console.log("alpha: ", alpha);
 }
 
 let scene, 
@@ -112,18 +125,6 @@ function handleWindowResize() {
 	camera.updateProjectionMatrix();
 }
 
-function handleOrientation(event) {
-	let absolute = event.absolute;
- 	let alpha    = event.alpha;
- 	let beta     = event.beta;
-  	let gamma    = event.gamma;
-
-  	camera.rotation.x = beta;
-  	camera.rotation.y = gamma;
-  	camera.rotation.z = alpha;
-
-  	console.log("alpha: ", alpha);
-}
 
 let titleCard;
 function handleKeys(event) {
@@ -627,7 +628,7 @@ function loop() {
 	// updatePlane();
 	updateCamera();
 
-	handleOrientation();
+	// handleMotion();
 
 	// explosion();
 
