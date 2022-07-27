@@ -19,7 +19,7 @@ createScene();
 createLights();
 
 //objects
-// createPlane();
+createPlane();
 
 createTrash();
 
@@ -34,25 +34,39 @@ document.addEventListener('mouseup', handleMouseUp, false);
 
 document.addEventListener('keydown', handleKeys, false);
 
+document.addEventListener('touchstart', handleMouseDown, false);
+
+document.addEventListener('touchend', handleMouseUp, false);
 
 // window.addEventListener('devicemotion', handleMotion, true);
 
+// window.addEventListener('deviceorientation',handleOrientation, true);
 
 loop();
 }
 
-function handleMotion(event) {
-	// let absolute = event.rotationRate.absolute;
- 	let alpha    = event.RotationRate.alpha;
- 	let beta     = event.RotationRate.beta;
-  	let gamma    = event.RotationRate.gamma;
+// function handleMotion(event) {
+// 	// let absolute = event.rotationRate.absolute;
+//  	let alpha    = event.RotationRate.alpha;
+//  	let beta     = event.RotationRate.beta;
+//   	let gamma    = event.RotationRate.gamma;
 
-  	camera.rotation.x = beta;
-  	camera.rotation.y = gamma;
-  	camera.rotation.z = alpha;
+//   	camera.rotation.x = beta;
+//   	camera.rotation.y = gamma;
+//   	camera.rotation.z = alpha;
 
-  	console.log("alpha: ", alpha);
-}
+//   	console.log("alpha: ", alpha);
+// }
+
+// function handleOrientation(event) {
+// 	let alpha = event.alpha;
+// 	let beta = event.beta;
+// 	let gamma = event.gama;
+
+// 	camera.rotation.x = event.alpha;
+// 	camera.rotation.y = event.beta;
+// 	camera.rotation.z = event.gamma;
+// }
 
 let scene, 
 		camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
@@ -410,8 +424,8 @@ var AirPlane = function() {
 
 function createPlane(){ 
 	airplane = new AirPlane();
-	airplane.mesh.scale.set(.25,.25,.25);
-	airplane.mesh.position.y = 100;
+	airplane.mesh.scale.set(.2,.2,.2);
+	airplane.mesh.position.y = 50;
 
 	//placeholder, face direction of camera
 	airplane.mesh.rotation.y = -80;
@@ -530,25 +544,25 @@ function handleMouseUp(event) {
 	down = 0;
 }
 
-// function updatePlane() {
-// 	var targetY = normalize(mousePos.y,-.75,.75,25, 175);
-// 	var targetX = normalize(mousePos.x,-.75,.75,-100, 100);
+function updatePlane() {
+	var targetY = normalize(mousePos.y,-.75,.75,25, 175);
+	var targetX = normalize(mousePos.x,-.75,.75,-100, 100);
 
-// 	// update the airplane's position
-// 	// airplane.mesh.position.y += (targetY-airplane.mesh.position.y)*0.1;
-// 	// airplane.mesh.rotation.z = (targetY-airplane.mesh.position.y)*0.0128;
-// 	// airplane.mesh.rotation.x = (airplane.mesh.position.y-targetY)*0.0064;
+	// update the airplane's position
+	// airplane.mesh.position.y += (targetY-airplane.mesh.position.y)*0.1;
+	// airplane.mesh.rotation.z = (targetY-airplane.mesh.position.y)*0.0128;
+	// airplane.mesh.rotation.x = (airplane.mesh.position.y-targetY)*0.0064;
 
-// 	//adjust to camera position
-// 		airplane.mesh.position.z = camera.position.z - 100;
+	//adjust to camera position
+		airplane.mesh.position.z = camera.position.z - 100;
 	
 	
 
 
-// 	//
+	//
 
-// 	airplane.propeller.rotation.x += 0.3;
-// }
+	airplane.propeller.rotation.x += 0.3;
+}
 
 let speed = 10;
 function updateCamera(event) {
@@ -638,10 +652,12 @@ function loop() {
 		}
 	}
 
-	// updatePlane();
+	updatePlane();
 	updateCamera();
 
 	// handleMotion();
+
+	// handleOrientation();
 
 	// explosion();
 

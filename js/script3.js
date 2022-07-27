@@ -41,18 +41,18 @@ document.addEventListener('keydown', handleKeys, false);
 loop();
 }
 
-function handleMotion(event) {
-	// let absolute = event.rotationRate.absolute;
- 	let alpha    = event.RotationRate.alpha;
- 	let beta     = event.RotationRate.beta;
-  	let gamma    = event.RotationRate.gamma;
+// function handleMotion(event) {
+// 	// let absolute = event.rotationRate.absolute;
+//  	let alpha    = event.RotationRate.alpha;
+//  	let beta     = event.RotationRate.beta;
+//   	let gamma    = event.RotationRate.gamma;
 
-  	camera.rotation.x = beta;
-  	camera.rotation.y = gamma;
-  	camera.rotation.z = alpha;
+//   	camera.rotation.x = beta;
+//   	camera.rotation.y = gamma;
+//   	camera.rotation.z = alpha;
 
-  	console.log("alpha: ", alpha);
-}
+//   	console.log("alpha: ", alpha);
+// }
 
 let scene, 
 		camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
