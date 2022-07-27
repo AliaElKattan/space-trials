@@ -26,7 +26,7 @@ createTrash();
 createPlanet();
 createSky();
 
-document.addEventListener('mousemove', handleMouseMove, false);
+// document.addEventListener('mousemove', handleMouseMove, false);
 
 document.addEventListener('mousedown', handleMouseDown, false);
 
@@ -359,14 +359,14 @@ var AirPlane = function() {
 	cockpit.receiveShadow = true;
 	this.mesh.add(cockpit);
 	
-	geomCockpit.vertices[4].y-=10;
-	geomCockpit.vertices[4].z+=20;
-	geomCockpit.vertices[5].y-=10;
-	geomCockpit.vertices[5].z-=20;
-	geomCockpit.vertices[6].y+=30;
-	geomCockpit.vertices[6].z+=20;
-	geomCockpit.vertices[7].y+=30;
-	geomCockpit.vertices[7].z-=20;
+	// geomCockpit.vertices[4].y-=10;
+	// geomCockpit.vertices[4].z+=20;
+	// geomCockpit.vertices[5].y-=10;
+	// geomCockpit.vertices[5].z-=20;
+	// geomCockpit.vertices[6].y+=30;
+	// geomCockpit.vertices[6].z+=20;
+	// geomCockpit.vertices[7].y+=30;
+	// geomCockpit.vertices[7].z-=20;
 
 	var cockpit = new THREE.Mesh(geomCockpit, matCockpit);
 	cockpit.castShadow = true;
@@ -380,7 +380,7 @@ var AirPlane = function() {
 	engine.position.x = 40;
 	engine.castShadow = true;
 	engine.receiveShadow = true;
-	this.mesh.add(engine);
+	// this.mesh.add(engine);
 	
 	// Create the tail
 	var geomTailPlane = new THREE.BoxGeometry(15,20,5,1,1,1);
@@ -389,7 +389,7 @@ var AirPlane = function() {
 	tailPlane.position.set(-35,25,0);
 	tailPlane.castShadow = true;
 	tailPlane.receiveShadow = true;
-	this.mesh.add(tailPlane);
+	// this.mesh.add(tailPlane);
 	
 	// Create the wing
 	var geomSideWing = new THREE.BoxGeometry(40,8,150,1,1,1);
@@ -397,7 +397,7 @@ var AirPlane = function() {
 	var sideWing = new THREE.Mesh(geomSideWing, matSideWing);
 	sideWing.castShadow = true;
 	sideWing.receiveShadow = true;
-	this.mesh.add(sideWing);
+	// this.mesh.add(sideWing);
 	
 	// propeller
 	var geomPropeller = new THREE.BoxGeometry(20,10,10,1,1,1);
@@ -414,9 +414,9 @@ var AirPlane = function() {
 	blade.position.set(8,0,0);
 	blade.castShadow = true;
 	blade.receiveShadow = true;
-	this.propeller.add(blade);
+	// this.propeller.add(blade);
 	this.propeller.position.set(50,0,0);
-	this.mesh.add(this.propeller);
+	// this.mesh.add(this.propeller);
 };
 
 
@@ -424,11 +424,11 @@ var AirPlane = function() {
 
 function createPlane(){ 
 	airplane = new AirPlane();
-	airplane.mesh.scale.set(.2,.2,.2);
+	airplane.mesh.scale.set(.1,.1,.3);
 	airplane.mesh.position.y = 50;
 
 	//placeholder, face direction of camera
-	airplane.mesh.rotation.y = -80;
+	// airplane.mesh.rotation.y = -80;
 
 
 	scene.add(airplane.mesh);
@@ -462,7 +462,7 @@ function createTrash(){
 	for(let i=0;i<=ntrash;i++) {
 		trash[i] = new Trash();
 		
-		trash[i].mesh.position.y = 30 + (Math.random() * 300);
+		trash[i].mesh.position.y = 50 + (Math.random() * 300);
 		trash[i].mesh.position.x = -500 + Math.random() * 1000;
 		trash[i].mesh.position.z = 100 + Math.random() * -800;
 
@@ -476,14 +476,14 @@ function createTrash(){
 
 var mousePos={x:0, y:0};
 
-function handleMouseMove(event) {
-	//horizontal axis
-	var tx = -1 + (event.clientX / WIDTH)*2;
+// function handleMouseMove(event) {
+// 	//horizontal axis
+// 	var tx = -1 + (event.clientX / WIDTH)*2;
 
-	//vertical axis, inverse the formula
-	var ty = 1 - (event.clientY / HEIGHT)*2;
-	mousePos = {x:tx, y:ty};
-}
+// 	//vertical axis, inverse the formula
+// 	var ty = 1 - (event.clientY / HEIGHT)*2;
+// 	mousePos = {x:tx, y:ty};
+// }
 
 let down = 0;
 let exploded = 0;
@@ -554,14 +554,11 @@ function updatePlane() {
 	// airplane.mesh.rotation.x = (airplane.mesh.position.y-targetY)*0.0064;
 
 	//adjust to camera position
-		airplane.mesh.position.z = camera.position.z - 100;
+	
+	airplane.mesh.position.z = camera.position.z - 100;
 	
 	
-
-
-	//
-
-	airplane.propeller.rotation.x += 0.3;
+	// airplane.propeller.rotation.x += 0.3;
 }
 
 let speed = 10;
