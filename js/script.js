@@ -9,6 +9,7 @@ var Colors = {
 };
 
 let touch = 0;
+let start = 0;
 
 window.addEventListener('load', init, false);
 
@@ -38,6 +39,7 @@ document.addEventListener('keydown', handleKeys, false);
 
 document.addEventListener('touchstart', function(e) {
   touch = 1;
+  start = 1;
 }, false);
 
 document.addEventListener('touchend', function(e) {
@@ -129,7 +131,7 @@ let titleCard;
 function handleKeys(event) {
 	titleCard = document.getElementById("cardIntro");
 
-	if(event.keyCode === 88 || touch === 1) {
+	if(event.keyCode === 88 || start === 0) {
 		down = 1;
 		airplane.mesh.position.x = 0;
 		airplane.mesh.position.y = planeStartY;
