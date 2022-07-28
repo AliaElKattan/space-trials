@@ -39,7 +39,16 @@ document.addEventListener('keydown', handleKeys, false);
 
 document.addEventListener('touchstart', function(e) {
   touch = 1;
-  start = 1;
+
+if(down === 0) {
+  down = 1;
+		airplane.mesh.position.x = 0;
+		airplane.mesh.position.y = planeStartY;
+		airplane.mesh.position.z = planeStartZ;
+		titleCard.style.display = "none";
+		cardCrashed.style.display = "none";
+}
+
 }, false);
 
 document.addEventListener('touchend', function(e) {
@@ -127,11 +136,9 @@ function handleWindowResize() {
 }
 
 
-let titleCard;
 function handleKeys(event) {
-	titleCard = document.getElementById("cardIntro");
 
-	if(event.keyCode === 88 || start === 0) {
+	if(event.keyCode === 88) {
 		down = 1;
 		airplane.mesh.position.x = 0;
 		airplane.mesh.position.y = planeStartY;
@@ -591,7 +598,7 @@ function normalize(v,vmin,vmax,tmin, tmax){
 
 }
 
-let cardCrashed;
+let titleCard, cardCrashed;
 let livesCounter;
 let lives = 3;
 
@@ -605,6 +612,7 @@ function loop() {
 	let distancetoPlane, distancetoCam, camX, camY, camZ, objX, objY, objZ;
 
 	cardCrashed = document.getElementById("cardCrashed");
+	titleCard = document.getElementById("cardIntro");
 	livesCounter = document.getElementById("lives");
 
 	for ( let i = 0; i < intersects.length; i ++ ) {
