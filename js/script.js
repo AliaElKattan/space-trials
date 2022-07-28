@@ -129,7 +129,7 @@ let titleCard;
 function handleKeys(event) {
 	titleCard = document.getElementById("cardIntro");
 
-	if(event.keyCode === 88) {
+	if(event.keyCode === 88 || touch === 1) {
 		down = 1;
 		airplane.mesh.position.x = 0;
 		airplane.mesh.position.y = planeStartY;
@@ -493,7 +493,7 @@ function handleTouchMove(event) {
   	touchPos={x:tx,y:ty};
 }
 
-let down = 1;
+let down = 0;
 let exploded = 0;
 
 // function handleMouseDown(event) {
@@ -637,12 +637,12 @@ function loop() {
 			lives-= 1;
 
 			if(lives === 2) {
-				livesCounter.innerHTML = "<p>LIVES: 2<p>";
+				livesCounter.innerHTML = "<h2>LIVES: 2<h2>";
 			}
 
-			if(lives === 1) livesCounter.innerHTML = "<p>LIVES: 1<p>";
+			if(lives === 1) livesCounter.innerHTML = "<h2>LIVES: 1<h2>";
 
-			if(lives === 0) livesCounter.innerHTML = "<p>LIVES: 3<p>";
+			if(lives === 0) livesCounter.innerHTML = "<h2>LIVES: 3<h2>";
 
 			// intersects[ i ].object.material.color.set( 0xff0000 );
 			camera.position.set(camStartX, camStartY, camStartZ);
