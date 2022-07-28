@@ -145,6 +145,10 @@ function handleKeys(event) {
 	titleCard = document.getElementById("cardIntro");
 
 	if(event.keyCode === 88) {
+		down = 1;
+		airplane.mesh.position.x = 0;
+		airplane.mesh.position.y = planeStartY;
+		airplane.mesh.position.z = planeStartZ;
 		titleCard.style.display = "none";
 		cardCrashed.style.display = "none";
 	}
@@ -423,11 +427,13 @@ var AirPlane = function() {
 
 // var airplane;
 
+let planeStartY = 50;
+let planeStartZ = 140;
 function createPlane(){ 
 	airplane = new AirPlane();
 	airplane.mesh.scale.set(.1,.1,.3);
-	airplane.mesh.position.y = 50;
-	airplane.mesh.position.z = 140;
+	airplane.mesh.position.y = planeStartY;
+	airplane.mesh.position.z = planeStartZ;
 
 	//placeholder, face direction of camera
 	// airplane.mesh.rotation.y = -80;
@@ -551,47 +557,22 @@ function updatePlane() {
 	var targetY = normalize(mousePos.y,-.75,.75,25, 175);
 	var targetX = normalize(mousePos.x,-.75,.75,-100, 100);
 
-	// update the airplane's position
-	// airplane.mesh.position.y += (targetY-airplane.mesh.position.y)*0.1;
-	// airplane.mesh.rotation.z = (targetY-airplane.mesh.position.y)*0.0128;
-	// airplane.mesh.rotation.x = (airplane.mesh.position.y-targetY)*0.0064;
-
-	//adjust to camera position
-	
-	// airplane.mesh.position.z = camera.position.z - 100;
-	
+	if (down === 1) {
 	airplane.mesh.rotation.x = mousePos.y * .5;
 	airplane.mesh.rotation.y = mousePos.x * -.5;
 
 	airplane.mesh.position.z -= speed;
 	airplane.mesh.position.y += speed * (Math.tan(airplane.mesh.rotation.x));
 	airplane.mesh.position.x -= speed * (Math.tan(airplane.mesh.rotation.y));
-
-
-	// airplane.propeller.rotation.x += 0.3;
 }
 
-let speed = 1;
+}
+
+let speed = 2;
 function updateCamera(event) {
-	// var targetY = normalize(mousePos.y,-.75,.75,25, 75);
-	// var targetX = normalize(mousePos.x,-.75,.75,-100, 50);
-
-	// camera.position.y += (targetY+camera.rotation.y)*0.01;
-	// camera.rotation.z = (targetY-camera.position.y)*0.0128;
-	// camera.rotation.x = (camera.rotation.x-targetY)*0.0064;
-
-	// camera.rotation.x = mousePos.y * .5;
-	// camera.rotation.y = mousePos.x * -.5;
-
-
-camera.position.z = airplane.mesh.position.z + 70;
-camera.position.x = airplane.mesh.position.x;
-camera.position.y = airplane.mesh.position.y;
-	if(down == 1) {
-		// camera.position.z -= speed;
-		camera.position.y += speed * (Math.tan(camera.rotation.x));
-		camera.position.x -= speed * (Math.tan(camera.rotation.y));
-	}
+	camera.position.z = airplane.mesh.position.z + 70;
+	camera.position.x = airplane.mesh.position.x;
+	camera.position.y = airplane.mesh.position.y;
 
 }
 
@@ -623,7 +604,7 @@ function loop() {
 	// raycaster.set(airplane.mesh.position,direction)
 	// calculate objects intersecting the picking ray
 	const intersects = raycaster.intersectObjects( scene.children );
-	let distance, camX, camY, camZ, objX, objY, objZ;
+	let distancetoPlane, distancetoCam, camX, camY, camZ, objX, objY, objZ;
 
 	cardCrashed = document.getElementById("cardCrashed");
 	livesCounter = document.getElementById("lives");
@@ -638,11 +619,23 @@ function loop() {
 		camY = camera.position.y;
 		camZ = camera.position.z;
 
+		
+		planeX = airplane.mesh.position.x;
+		planeY = airplane.mesh.position.y;
+		planeZ = airplane.mesh.position.z;
+
 		//distance formula
 
-		distance = Math.sqrt(Math.pow(objX-camX,2)+Math.pow(objY-camY,2)+Math.pow(objZ-camZ,2));
+		distancetoCam = Math.sqrt(Math.pow(objX-camX,2)+Math.pow(objY-camY,2)+Math.pow(objZ-camZ,2));
 
-		if (distance < 30) {
+		distancetoPlane = Math.sqrt(Math.pow(objX-planeX,2)+Math.pow(objY-planeY,2)+Math.pow(objZ-planeZ,2))
+
+		console.log(distancetoPlane);
+		console.log("test");
+
+		if (distancetoPlane < 30) {
+			down = 0;
+
 			console.log("collided!");
 			cardCrashed.style.display= "block";
 			lives-= 1;
@@ -658,7 +651,14 @@ function loop() {
 			// intersects[ i ].object.material.color.set( 0xff0000 );
 			camera.position.set(camStartX, camStartY, camStartZ);
 
-			// camera.position.z = camStartZ;
+
+			//restart position
+
+			airplane.mesh.position.x = 0;
+			airplane.mesh.position.y = planeStartY;
+			airplane.mesh.position.z = planeStartZ;
+
+
 
 		}
 	}

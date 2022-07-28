@@ -550,7 +550,7 @@ function updatePlane() {
 	airplane.propeller.rotation.x += 0.3;
 }
 
-let speed = 10;
+let speed = 3;
 function updateCamera(event) {
 	// var targetY = normalize(mousePos.y,-.75,.75,25, 75);
 	// var targetX = normalize(mousePos.x,-.75,.75,-100, 50);
@@ -598,7 +598,7 @@ function loop() {
 
 	// calculate objects intersecting the picking ray
 	const intersects = raycaster.intersectObjects( scene.children );
-	let distance, camX, camY, camZ, objX, objY, objZ;
+	let distancetoCam, distancetoPlane, camX, camY, camZ, objX, objY, objZ;
 
 	cardCrashed = document.getElementById("cardCrashed");
 	livesCounter = document.getElementById("lives");
