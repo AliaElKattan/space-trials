@@ -19,7 +19,7 @@ createScene();
 createLights();
 
 //objects
-createPlane();
+// createPlane();
 
 createTrash();
 
@@ -594,7 +594,7 @@ function loop() {
 
 	// airplane.mesh.position.x += .1;
 
-		raycaster.setFromCamera( pointer, camera );
+	raycaster.setFromCamera( pointer, camera );
 
 	// calculate objects intersecting the picking ray
 	const intersects = raycaster.intersectObjects( scene.children );
@@ -638,7 +638,7 @@ function loop() {
 		}
 	}
 
-	updatePlane();
+	// updatePlane();
 	updateCamera();
 
 	// handleMotion();

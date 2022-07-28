@@ -26,7 +26,7 @@ createTrash();
 createPlanet();
 createSky();
 
-// document.addEventListener('mousemove', handleMouseMove, false);
+document.addEventListener('mousemove', handleMouseMove, false);
 
 document.addEventListener('mousedown', handleMouseDown, false);
 
@@ -352,7 +352,8 @@ var AirPlane = function() {
 	this.mesh = new THREE.Object3D();
 	
 	// Create the cabin
-	var geomCockpit = new THREE.BoxGeometry(80,50,50,1,1,1);
+	var geomCockpit = new THREE.BoxGeometry(70,30,50,1,1,1);
+	// var geomCockpit = new THREE.CylinderGeometry(50,60,20,64);
 	var matCockpit = new THREE.MeshPhongMaterial({color:Colors.red, shading:THREE.FlatShading});
 	var cockpit = new THREE.Mesh(geomCockpit, matCockpit);
 	cockpit.castShadow = true;
@@ -426,6 +427,7 @@ function createPlane(){
 	airplane = new AirPlane();
 	airplane.mesh.scale.set(.1,.1,.3);
 	airplane.mesh.position.y = 50;
+	airplane.mesh.position.z = 140;
 
 	//placeholder, face direction of camera
 	// airplane.mesh.rotation.y = -80;
@@ -464,28 +466,29 @@ function createTrash(){
 		
 		trash[i].mesh.position.y = 50 + (Math.random() * 300);
 		trash[i].mesh.position.x = -500 + Math.random() * 1000;
-		trash[i].mesh.position.z = 100 + Math.random() * -800;
-
+		trash[i].mesh.position.z = 50 + Math.random() * -800;
+		// trash[i].mesh.position.z = -80;
 
 		scene.add(trash[i].mesh);
 	}
 
 }
 
+
 //mouse move
 
 var mousePos={x:0, y:0};
 
-// function handleMouseMove(event) {
-// 	//horizontal axis
-// 	var tx = -1 + (event.clientX / WIDTH)*2;
+function handleMouseMove(event) {
+	//horizontal axis
+	var tx = -1 + (event.clientX / WIDTH)*2;
 
-// 	//vertical axis, inverse the formula
-// 	var ty = 1 - (event.clientY / HEIGHT)*2;
-// 	mousePos = {x:tx, y:ty};
-// }
+	//vertical axis, inverse the formula
+	var ty = 1 - (event.clientY / HEIGHT)*2;
+	mousePos = {x:tx, y:ty};
+}
 
-let down = 0;
+let down = 1;
 let exploded = 0;
 
 function handleMouseDown(event) {
@@ -555,13 +558,20 @@ function updatePlane() {
 
 	//adjust to camera position
 	
-	airplane.mesh.position.z = camera.position.z - 100;
+	// airplane.mesh.position.z = camera.position.z - 100;
 	
-	
+	airplane.mesh.rotation.x = mousePos.y * .5;
+	airplane.mesh.rotation.y = mousePos.x * -.5;
+
+	airplane.mesh.position.z -= speed;
+	airplane.mesh.position.y += speed * (Math.tan(airplane.mesh.rotation.x));
+	airplane.mesh.position.x -= speed * (Math.tan(airplane.mesh.rotation.y));
+
+
 	// airplane.propeller.rotation.x += 0.3;
 }
 
-let speed = 10;
+let speed = 1;
 function updateCamera(event) {
 	// var targetY = normalize(mousePos.y,-.75,.75,25, 75);
 	// var targetX = normalize(mousePos.x,-.75,.75,-100, 50);
@@ -570,12 +580,15 @@ function updateCamera(event) {
 	// camera.rotation.z = (targetY-camera.position.y)*0.0128;
 	// camera.rotation.x = (camera.rotation.x-targetY)*0.0064;
 
-	camera.rotation.x = mousePos.y * .5;
-	camera.rotation.y = mousePos.x * -.5;
+	// camera.rotation.x = mousePos.y * .5;
+	// camera.rotation.y = mousePos.x * -.5;
 
+
+camera.position.z = airplane.mesh.position.z + 70;
+camera.position.x = airplane.mesh.position.x;
+camera.position.y = airplane.mesh.position.y;
 	if(down == 1) {
-		// camera.position.z -= .5;
-		camera.position.z -= speed;
+		// camera.position.z -= speed;
 		camera.position.y += speed * (Math.tan(camera.rotation.x));
 		camera.position.x -= speed * (Math.tan(camera.rotation.y));
 	}
@@ -607,6 +620,7 @@ function loop() {
 
 		raycaster.setFromCamera( pointer, camera );
 
+	// raycaster.set(airplane.mesh.position,direction)
 	// calculate objects intersecting the picking ray
 	const intersects = raycaster.intersectObjects( scene.children );
 	let distance, camX, camY, camZ, objX, objY, objZ;
@@ -652,6 +666,10 @@ function loop() {
 	updatePlane();
 	updateCamera();
 
+
+	// for (let i=0;i<=ntrash;i++) {
+	// 	trash[i].mesh.position.z += 1;
+	// }
 	// handleMotion();
 
 	// handleOrientation();
