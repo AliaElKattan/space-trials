@@ -8,6 +8,8 @@ var Colors = {
 	yellow: 0xffd53d,
 };
 
+let deltaX, deltaY;
+
 window.addEventListener('load', init, false);
 
 function init(event) {
@@ -28,45 +30,40 @@ createSky();
 
 document.addEventListener('mousemove', handleMouseMove, false);
 
-document.addEventListener('mousedown', handleMouseDown, false);
+// document.addEventListener('mousedown', handleMouseDown, false);
 
-document.addEventListener('mouseup', handleMouseUp, false);
+// document.addEventListener('mouseup', handleMouseUp, false);
 
 document.addEventListener('keydown', handleKeys, false);
 
-document.addEventListener('touchstart', handleMouseDown, false);
+// document.addEventListener('touchstart', handleMouseDown, false);
 
-document.addEventListener('touchend', handleMouseUp, false);
+// document.addEventListener('touchend', handleMouseUp, false);
 
 // window.addEventListener('devicemotion', handleMotion, true);
 
 // window.addEventListener('deviceorientation',handleOrientation, true);
 
+document.addEventListener('touchstart', function(e) {
+  // Cache the client X/Y coordinates
+  clientX = e.touches[0].clientX;
+  clientY = e.touches[0].clientY;
+}, false);
+
+
+document.addEventListener('touchend', function(e) {
+  // Compute the change in X and Y coordinates.
+  // The first touch point in the changedTouches
+  // list is the touch point that was just removed from the surface.
+  deltaX = e.changedTouches[0].clientX - clientX;
+  deltaY = e.changedTouches[0].clientY - clientY;
+
+}, false);
+
+
 loop();
 }
 
-// function handleMotion(event) {
-// 	// let absolute = event.rotationRate.absolute;
-//  	let alpha    = event.RotationRate.alpha;
-//  	let beta     = event.RotationRate.beta;
-//   	let gamma    = event.RotationRate.gamma;
-
-//   	camera.rotation.x = beta;
-//   	camera.rotation.y = gamma;
-//   	camera.rotation.z = alpha;
-
-//   	console.log("alpha: ", alpha);
-// }
-
-// function handleOrientation(event) {
-// 	let alpha = event.alpha;
-// 	let beta = event.beta;
-// 	let gamma = event.gama;
-
-// 	camera.rotation.x = event.alpha;
-// 	camera.rotation.y = event.beta;
-// 	camera.rotation.z = event.gamma;
-// }
 
 let scene, 
 		camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
@@ -497,39 +494,39 @@ function handleMouseMove(event) {
 let down = 1;
 let exploded = 0;
 
-function handleMouseDown(event) {
-	titleCard = document.getElementById("cardIntro");
+// function handleMouseDown(event) {
+// 	titleCard = document.getElementById("cardIntro");
 
-	let geom = new THREE.DodecahedronGeometry(10,0);
+// 	let geom = new THREE.DodecahedronGeometry(10,0);
 	
 
-	// create the material 
-	let mat = new THREE.MeshPhongMaterial({
-		color:Colors.brownDark,
-		opacity:1,
-		shading:THREE.FlatShading,
-	});
+// 	// create the material 
+// 	let mat = new THREE.MeshPhongMaterial({
+// 		color:Colors.brownDark,
+// 		opacity:1,
+// 		shading:THREE.FlatShading,
+// 	});
 
-	if(titleCard.style.display === "none") {
-			down = 1;
-	}
+// 	if(titleCard.style.display === "none") {
+// 			down = 1;
+// 	}
 
-	exploded = 1;
+// 	exploded = 1;
 
-	for(let i=0;i<=ntrash;i++) {
+// 	for(let i=0;i<=ntrash;i++) {
 
-		// trash[i].mesh.scale.set(.5,.5,.5);
+// 		// trash[i].mesh.scale.set(.5,.5,.5);
 
-		for(let j=0;j<=10;j++) {
-			let d = new THREE.Mesh(geom,mat);
-			trash[i].mesh.add(d);
-			// d.position.x = trash[i].mesh.position.x+Math.random()*10;
-		}
+// 		for(let j=0;j<=10;j++) {
+// 			let d = new THREE.Mesh(geom,mat);
+// 			trash[i].mesh.add(d);
+// 			// d.position.x = trash[i].mesh.position.x+Math.random()*10;
+// 		}
 
 
-	}
+// 	}
 
-}
+// }
 
 function explosion(){
 
@@ -549,9 +546,9 @@ function explosion(){
 	}
 }
 
-function handleMouseUp(event) {
-	down = 0;
-}
+// function handleMouseUp(event) {
+// 	down = 1;
+// }
 
 function updatePlane() {
 	var targetY = normalize(mousePos.y,-.75,.75,25, 175);
