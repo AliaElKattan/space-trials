@@ -8,7 +8,7 @@ var Colors = {
 	yellow: 0xffd53d,
 };
 
-let deltaX, deltaY;
+let touch = 0;
 
 window.addEventListener('load', init, false);
 
@@ -30,20 +30,22 @@ createSky();
 
 document.addEventListener('mousemove', handleMouseMove, false);
 
+// document.addEventListener('mousedown', handleMouseDown, false);
+
+// document.addEventListener('mouseup', handleMouseUp, false);
+
 document.addEventListener('keydown', handleKeys, false);
 
 document.addEventListener('touchstart', function(e) {
-  // Cache the client X/Y coordinates
-  clientX = e.touches[0].clientX;
-  clientY = e.touches[0].clientY;
+  touch = 1;
 }, false);
-
 
 document.addEventListener('touchend', function(e) {
-  deltaX = e.changedTouches[0].clientX - clientX;
-  deltaY = e.changedTouches[0].clientY - clientY;
-
+  touch = 0;
 }, false);
+
+
+document.addEventListener('touchmove', handleTouchMove, false);
 
 
 loop();
@@ -410,7 +412,7 @@ var AirPlane = function() {
 
 // var airplane;
 
-let planeStartY = 80;
+let planeStartY = 50;
 let planeStartZ = 140;
 function createPlane(){ 
 	airplane = new AirPlane();
@@ -467,6 +469,7 @@ function createTrash(){
 //mouse move
 
 var mousePos={x:0, y:0};
+let touchPos={x:0, y:0};
 
 function handleMouseMove(event) {
 	//horizontal axis
@@ -475,6 +478,19 @@ function handleMouseMove(event) {
 	//vertical axis, inverse the formula
 	var ty = 1 - (event.clientY / HEIGHT)*2;
 	mousePos = {x:tx, y:ty};
+
+}
+
+let touchX, touchY;
+
+function handleTouchMove(event) {
+	touchX = event.touches[0].clientX;
+  	touchY = event.touches[0].clientY;
+
+  	let tx = -1 + (touchX / WIDTH) *2;
+  	let ty = 1 - (touchY / HEIGHT *2 );
+
+  	touchPos={x:tx,y:ty};
 }
 
 let down = 1;
@@ -532,17 +548,19 @@ function explosion(){
 	}
 }
 
-// function handleMouseUp(event) {
-// 	down = 1;
-// }
+let movePos = mousePos;
 
 function updatePlane() {
-	var targetY = normalize(mousePos.y,-.75,.75,25, 175);
-	var targetX = normalize(mousePos.x,-.75,.75,-100, 100);
+
+	if(touch === 1) movePos = touchPos;
+	else movePos = mousePos;
+
+	let targetY = normalize(movePos.y,-.75,.75,25, 175);
+	let targetX = normalize(movePos.x,-.75,.75,-100, 100);
 
 	if (down === 1) {
-	airplane.mesh.rotation.x = mousePos.y * .5;
-	airplane.mesh.rotation.y = mousePos.x * -.5;
+	airplane.mesh.rotation.x = movePos.y * .5;
+	airplane.mesh.rotation.y = movePos.x * -.5;
 
 	airplane.mesh.position.z -= speed;
 	airplane.mesh.position.y += speed * (Math.tan(airplane.mesh.rotation.x));
@@ -576,13 +594,8 @@ let livesCounter;
 let lives = 3;
 
 function loop() {
-	// airplane.propeller.rotation.x += 0.3;
-	// sea.mesh.rotation.z += .005;
-	// sky.mesh.rotation.z += .01;
 
-	// airplane.mesh.position.x += .1;
-
-		raycaster.setFromCamera( pointer, camera );
+	raycaster.setFromCamera( pointer, camera );
 
 	// raycaster.set(airplane.mesh.position,direction)
 	// calculate objects intersecting the picking ray
@@ -613,8 +626,8 @@ function loop() {
 
 		distancetoPlane = Math.sqrt(Math.pow(objX-planeX,2)+Math.pow(objY-planeY,2)+Math.pow(objZ-planeZ,2))
 
-		console.log(distancetoPlane);
-		console.log("test");
+		// console.log(distancetoPlane);
+		// console.log("test");
 
 		if (distancetoPlane < 30) {
 			down = 0;
@@ -624,12 +637,12 @@ function loop() {
 			lives-= 1;
 
 			if(lives === 2) {
-				livesCounter.innerHTML = "<h2>LIVES: 2<h2>";
+				livesCounter.innerHTML = "<p>LIVES: 2<p>";
 			}
 
-			if(lives === 1) livesCounter.innerHTML = "<h2>LIVES: 1<h2>";
+			if(lives === 1) livesCounter.innerHTML = "<p>LIVES: 1<p>";
 
-			if(lives === 0) livesCounter.innerHTML = "<h2>LIVES: 3<h2>";
+			if(lives === 0) livesCounter.innerHTML = "<p>LIVES: 3<p>";
 
 			// intersects[ i ].object.material.color.set( 0xff0000 );
 			camera.position.set(camStartX, camStartY, camStartZ);
@@ -648,16 +661,6 @@ function loop() {
 
 	updatePlane();
 	updateCamera();
-
-
-	// for (let i=0;i<=ntrash;i++) {
-	// 	trash[i].mesh.position.z += 1;
-	// }
-	// handleMotion();
-
-	// handleOrientation();
-
-	// explosion();
 
 	// render the scene
 	renderer.render(scene, camera);
