@@ -30,19 +30,7 @@ createSky();
 
 document.addEventListener('mousemove', handleMouseMove, false);
 
-// document.addEventListener('mousedown', handleMouseDown, false);
-
-// document.addEventListener('mouseup', handleMouseUp, false);
-
 document.addEventListener('keydown', handleKeys, false);
-
-// document.addEventListener('touchstart', handleMouseDown, false);
-
-// document.addEventListener('touchend', handleMouseUp, false);
-
-// window.addEventListener('devicemotion', handleMotion, true);
-
-// window.addEventListener('deviceorientation',handleOrientation, true);
 
 document.addEventListener('touchstart', function(e) {
   // Cache the client X/Y coordinates
@@ -52,9 +40,6 @@ document.addEventListener('touchstart', function(e) {
 
 
 document.addEventListener('touchend', function(e) {
-  // Compute the change in X and Y coordinates.
-  // The first touch point in the changedTouches
-  // list is the touch point that was just removed from the surface.
   deltaX = e.changedTouches[0].clientX - clientX;
   deltaY = e.changedTouches[0].clientY - clientY;
 
@@ -63,6 +48,7 @@ document.addEventListener('touchend', function(e) {
 
 loop();
 }
+
 
 
 let scene, 
@@ -424,7 +410,7 @@ var AirPlane = function() {
 
 // var airplane;
 
-let planeStartY = 50;
+let planeStartY = 80;
 let planeStartZ = 140;
 function createPlane(){ 
 	airplane = new AirPlane();
@@ -638,12 +624,12 @@ function loop() {
 			lives-= 1;
 
 			if(lives === 2) {
-				livesCounter.innerHTML = "<p>LIVES: 2<p>";
+				livesCounter.innerHTML = "<h2>LIVES: 2<h2>";
 			}
 
-			if(lives === 1) livesCounter.innerHTML = "<p>LIVES: 1<p>";
+			if(lives === 1) livesCounter.innerHTML = "<h2>LIVES: 1<h2>";
 
-			if(lives === 0) livesCounter.innerHTML = "<p>LIVES: 3<p>";
+			if(lives === 0) livesCounter.innerHTML = "<h2>LIVES: 3<h2>";
 
 			// intersects[ i ].object.material.color.set( 0xff0000 );
 			camera.position.set(camStartX, camStartY, camStartZ);

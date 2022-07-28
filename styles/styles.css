@@ -10,6 +10,7 @@ z-index: -1;
 
 #canvas {
 	width:  100%;
+	overflow-x:  hidden;
 }
 
 
@@ -28,10 +29,10 @@ pointer-events: none;
 z-index: 1;
 }
 
-#lives p {
+#lives h2 {
 color:  white;
 font-family:  Courier New, monospace;
-font-size:  1.3rem;
+/*font-size:  1rem;*/
 position: absolute;
 text-align:  left;
 padding-left:  1.8rem;
@@ -60,6 +61,7 @@ position: absolute;
 text-align:  right;
 padding-left:  90%;
 
+
 }
 
 #card{
@@ -81,7 +83,7 @@ display:  none;
 #cardCrashed {
 top: 0px;
 width: 100%;
-background-color:  red;
+/*background-color:  red;*/
 /*padding: 10px;*/
 box-sizing: border-box;
 text-align: center;
@@ -92,6 +94,7 @@ user-select: none;
 pointer-events: none;
 z-index: 1;
 display:  none;
+height:  30%;
 }
 
 
@@ -99,10 +102,11 @@ display:  none;
 background-color:  rgb(50,50,50,.8);
 position: absolute;
 text-align:  center;
-margin-left:  25%;
-width:  50%;
-height:  50%;
-margin-top: 10%;
+margin-left:  20%;
+width:  60%;
+height:  30%;
+margin-top: 20%;
+margin-bottom:  20%;
 padding-top: 1%;
 }
 
@@ -115,9 +119,10 @@ padding-top: 1%;
 }
 
 #text h3 {
-	font-size:  1.7rem;
+	font-size:  1.8rem;
 }
 
 #text p {
-	font-size:  1.2rem;
+	font-size:  1rem;
 }
+
