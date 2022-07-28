@@ -644,7 +644,10 @@ function loop() {
 
 			if(lives === 1) livesCounter.innerHTML = "<h2>LIVES: 1<h2>";
 
-			if(lives === 0) livesCounter.innerHTML = "<h2>LIVES: 3<h2>";
+			if(lives === 0) {
+				lives = 3;
+				livesCounter.innerHTML = "<h2>LIVES: 3<h2>";
+			} 
 
 			// intersects[ i ].object.material.color.set( 0xff0000 );
 			camera.position.set(camStartX, camStartY, camStartZ);
