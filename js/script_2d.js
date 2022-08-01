@@ -467,39 +467,42 @@ function createPlane(){
 }
 
 Trash = function() {
-	let geom = new THREE.DodecahedronGeometry(20,0);
 	
-	// let square = new THREE.Shape();
-	// square.moveTo(100,100);
-	// square.lineTo(100,-100);
-	// square.lineTo(-100,-100);
-	// square.lineTo(-100,100);
+	let square = new THREE.Shape();
+	square.moveTo(10,10);
+	square.lineTo(10,-10);
+	square.lineTo(-10,-10);
+	square.lineTo(-10,10);
 
-	// let geom_square = new THREE.ShapeGeometry(square);
+	let geom_square = new THREE.ShapeGeometry(square);
 
-	// let mat_square = new THREE.MeshBasicMaterial({
-	// 	color: Colors.red,
-	// 	opacity: 1,
-	// 	side: THREE.DoubleSide,
-	// 	depthWrite: false
-	// });
+	let mat_square = new THREE.MeshBasicMaterial({
+		color: Colors.brown,
+		opacity: 1,
+		side: THREE.DoubleSide,
+		depthWrite: false
+	});
 
 	// let square_mesh = new THREE.Mesh(geom_square, mat_square);
 
+	const loader = new THREE.TextureLoader();
+	loader.setCrossOrigin("Anonymous");
+
+	let texture = loader.load('bottle.png');
+	// let mat_sprite = new THREE.SpriteMaterial({map:texture, transparent : true, opacity : 0.5, color: 0xffffff });
+
+
+	let mat_sprite = new THREE.SpriteMaterial({map:texture, transparent : false, opacity : 0.5 });
+
+	let sprite = new THREE.Sprite(mat_sprite);
+	sprite.scale.set(100,100,100);
+	sprite.position.set(50,50,50);
+	scene.add(sprite);
+
+	this.mesh = new THREE.Mesh(geom_square, mat_square);
 	// scene.add(square_mesh);
 
-	// create the material 
-	let mat = new THREE.MeshPhongMaterial({
-		color:Colors.brownDark,
-		opacity:1,
-		shading:THREE.FlatShading,
-	});
-
-	// To create an object in Three.js, we have to create a mesh 
-	// which is a combination of a geometry and some material
-	this.mesh = new THREE.Mesh(geom, mat);
-
-	this.mesh.receiveShadow = true; 
+	// this.mesh.receiveShadow = true; 
 }
 
 let trash;
