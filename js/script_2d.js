@@ -495,7 +495,7 @@ Trash = function() {
 	let mat_sprite = new THREE.SpriteMaterial({map:texture, transparent : false, opacity : 0.5 });
 
 	let sprite = new THREE.Sprite(mat_sprite);
-	sprite.scale.set(100,100,100);
+	sprite.scale.set(10,10,10);
 	sprite.position.set(50,50,50);
 	scene.add(sprite);
 
