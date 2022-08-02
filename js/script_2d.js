@@ -488,7 +488,7 @@ Trash = function() {
 	const loader = new THREE.TextureLoader();
 	loader.setCrossOrigin("Anonymous");
 
-	let texture = loader.load('bottle.png');
+	let texture = loader.load('earth.png');
 	// let mat_sprite = new THREE.SpriteMaterial({map:texture, transparent : true, opacity : 0.5, color: 0xffffff });
 
 
