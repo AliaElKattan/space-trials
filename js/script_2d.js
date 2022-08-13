@@ -12,6 +12,7 @@ let touch = 0;
 let start = 0;
 let level = 1;
 
+
 window.addEventListener('load', init, false);
 
 function init(event) {
@@ -29,23 +30,6 @@ createTrash();
 
 createPlanet();
 createSky();
-
-// const loader = new FontLoader();
-
-// loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
-
-// 	const geometry = new TextGeometry( 'Hello three.js!', {
-// 		font: font,
-// 		size: 80,
-// 		height: 5,
-// 		curveSegments: 12,
-// 		bevelEnabled: true,
-// 		bevelThickness: 10,
-// 		bevelSize: 8,
-// 		bevelOffset: 0,
-// 		bevelSegments: 5
-// 	} );
-// } );
 
 document.addEventListener('mousemove', handleMouseMove, false);
 
@@ -76,17 +60,6 @@ document.addEventListener('touchend', function(e) {
 
 document.addEventListener('touchmove', handleTouchMove, false);
 
-
-// const loader = new THREE.TextureLoader();
-// let texture = loader.load( 'earth.png' );
-// texture.magFilter = THREE.NearestFilter;
-
-// let spritemat = new THREE.SpriteMaterial( { map: texture } );
-// let sprite = new THREE.Sprite( spritemat );
-
-// sprite.scale.set( 1, 2, 1);
-// sprite.position.set(0, 1, 0);
-// scene.add(sprite);
 
 loop();
 }
