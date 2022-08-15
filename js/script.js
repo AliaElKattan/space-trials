@@ -162,44 +162,41 @@ var hemisphereLight, shadowLight;
 function createLights() {
 
 //hemisphere light first par sky color, second par ground color, third intensity of light
-hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, .9);
-
-
-
+hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, 1);
 
 //directional light
-shadowLight = new THREE.DirectionalLight(0xffffff, 0.9);
+// shadowLight = new THREE.DirectionalLight(0xffffff, 0.9);
 
-shadowLight.position.set(150,350,350);
+// shadowLight.position.set(150,350,350);
 
-shadowLight.castShadow = true;
+// shadowLight.castShadow = true;
 
-shadowLight.shadow.camera.left = -400;
-	shadowLight.shadow.camera.right = 400;
-	shadowLight.shadow.camera.top = 400;
-	shadowLight.shadow.camera.bottom = -400;
-	shadowLight.shadow.camera.near = 1;
-	shadowLight.shadow.camera.far = 1000;
+// shadowLight.shadow.camera.left = -400;
+// 	shadowLight.shadow.camera.right = 400;
+// 	shadowLight.shadow.camera.top = 400;
+// 	shadowLight.shadow.camera.bottom = -400;
+// 	shadowLight.shadow.camera.near = 1;
+// 	shadowLight.shadow.camera.far = 1000;
 
-// define the visible area of the projected shadow
-	shadowLight.shadow.camera.left = -400;
-	shadowLight.shadow.camera.right = 400;
-	shadowLight.shadow.camera.top = 400;
-	shadowLight.shadow.camera.bottom = -400;
-	shadowLight.shadow.camera.near = 1;
-	shadowLight.shadow.camera.far = 1000;
+// // define the visible area of the projected shadow
+// 	shadowLight.shadow.camera.left = -400;
+// 	shadowLight.shadow.camera.right = 400;
+// 	shadowLight.shadow.camera.top = 400;
+// 	shadowLight.shadow.camera.bottom = -400;
+// 	shadowLight.shadow.camera.near = 1;
+// 	shadowLight.shadow.camera.far = 1000;
 
-// define the resolution of the shadow; the higher the better, 
-// but also the more expensive and less performant
-	shadowLight.shadow.mapSize.width = 2048;
-	shadowLight.shadow.mapSize.height = 2048;
-
-
-ambientLight = new THREE.AmbientLight(0x151752, .4);
+// // define the resolution of the shadow; the higher the better, 
+// // but also the more expensive and less performant
+// 	shadowLight.shadow.mapSize.width = 2048;
+// 	shadowLight.shadow.mapSize.height = 2048;
 
 
+ambientLight = new THREE.AmbientLight(0x151752, 1);
+
+	
 scene.add(hemisphereLight);
-scene.add(shadowLight);
+// scene.add(shadowLight);
 scene.add(ambientLight);
 }
 
@@ -215,8 +212,8 @@ Planet = function(){
 	// create the material 
 	var mat = new THREE.MeshPhongMaterial({
 		color:Colors.blue,
-		transparent:true,
-		opacity:.9,
+		// transparent:true,
+		opacity:1,
 		shading:THREE.FlatShading,
 	});
 
@@ -302,7 +299,7 @@ Sky = function(){
 	this.mesh = new THREE.Object3D();
 	
 	// choose a number of clouds to be scattered in the sky
-	this.nStars = 50;
+	this.nStars = 500;
 	// To distribute the clouds consistently,
 	// we need to place them according to a uniform angle
 	var stepAngle = Math.PI*2 / this.nStars;
@@ -310,24 +307,30 @@ Sky = function(){
 	// create the clouds
 	for(var i=0; i<this.nStars; i++){
 		var c = new Star();
-	 
-		// set the rotation and the position of each cloud;
-		// for that we use a bit of trigonometry
-		// var a = stepAngle*i; // this is the final angle of the cloud
-		// var h = 800 + Math.random()*200; // this is the distance between the center of the axis and the cloud itself
 
-		// Trigonometry!!! I hope you remember what you've learned in Math :)
-		// in case you don't: 
-		// we are simply converting polar coordinates (angle, distance) into Cartesian coordinates (x, y)
-		// c.mesh.position.y = Math.sin(a)*h;
-		// c.mesh.position.x = Math.cos(a)*h;
-
-		// for a better result, we position the clouds 
-		// at random depths inside of the scene
-		c.mesh.position.z = -7000-Math.random()*1000;
 		c.mesh.position.x = -10000 + Math.random() * 20000;
-		c.mesh.position.y = -400 + Math.random() * 5000;
 
+if(i<this.nStars/2) {
+	//front and back of planet
+		c.mesh.position.y = -7000 + Math.random() * 14000;
+		if(i<this.nStars/4) {
+		c.mesh.position.z = -7000-Math.random()*1000;
+		}
+else {
+		c.mesh.position.z = 7000+Math.random()*1000;
+}
+}
+// top and down
+else {
+	c.mesh.position.z = -7000 + Math.random() * 14000;
+	if(i<(this.nStars-this.nStars/4)) {
+c.mesh.position.y = -7000-Math.random()*1000;
+		}
+else {
+		c.mesh.position.y = 7000+Math.random()*1000;
+}
+
+}
 		
 		// we also set a random scale for each cloud
 		var s = 1+Math.random()*2;
@@ -449,33 +452,28 @@ function createPlane(){
 }
 
 Trash = function() {
-	let geom = new THREE.DodecahedronGeometry(20,0);
-	
-	// let square = new THREE.Shape();
-	// square.moveTo(100,100);
-	// square.lineTo(100,-100);
-	// square.lineTo(-100,-100);
-	// square.lineTo(-100,100);
 
-	// let geom_square = new THREE.ShapeGeometry(square);
+	let size = Math.random() * 20;
+	let obj = Math.random() * 5;
+	let geom;
 
-	// let mat_square = new THREE.MeshBasicMaterial({
-	// 	color: Colors.red,
-	// 	opacity: 1,
-	// 	side: THREE.DoubleSide,
-	// 	depthWrite: false
-	// });
+	// rewrite this 
 
-	// let square_mesh = new THREE.Mesh(geom_square, mat_square);
+	if(obj < 1) {geom = new THREE.DodecahedronGeometry(size,0);}
+	if(obj >= 1 && obj < 2) {geom = new THREE.CylinderGeometry( size, 20, 4, 8 );}
+	if(obj >= 2 && obj < 3) {geom = new THREE.TorusGeometry( size, 5, 16, 100 );}
+	if(obj >= 3 && obj < 4) {geom = new THREE.IcosahedronGeometry( size, 0);}
+	if(obj >= 4 && obj < 5) {geom = new THREE.OctahedronGeometry(size,0);}
 
-	// scene.add(square_mesh);
 
 	// create the material 
 	let mat = new THREE.MeshPhongMaterial({
-		color:Colors.brownDark,
+		color:Math.random() * 0xffffff,
 		opacity:1,
 		shading:THREE.FlatShading,
 	});
+
+	// geom.vertices[1].x += Math.random() * 40;
 
 	// To create an object in Three.js, we have to create a mesh 
 	// which is a combination of a geometry and some material
@@ -497,17 +495,12 @@ function createTrash(){
 		trash[i] = new Trash();
 		let a = stepAngle * i;
 		
-		// trash[i].mesh.position.y = 50 + (Math.random() * 300);
 		trash[i].mesh.position.y = 700 * Math.sin(a);
 		trash[i].mesh.position.x = -650 + Math.random() * 1300;
 
-		// trash[i].mesh.position.x = -500 + Math.random() * 1000;
-
-		// trash[i].mesh.position.z = 50 + Math.random() * -800;
-
 		trash[i].mesh.position.z = 700 * Math.cos(a);
 
-		// trash[i].mesh.position.z = -80;
+		trash[i].mesh.rotation.x = Math.random() * (Math.PI * 2);
 
 		scene.add(trash[i].mesh);
 	}
