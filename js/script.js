@@ -485,7 +485,7 @@ Trash = function() {
 }
 
 let trash;
-let ntrash = 400;
+let ntrash = 200;
 
 function createTrash(){
 
