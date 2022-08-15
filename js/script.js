@@ -501,6 +501,8 @@ function createTrash(){
 		trash[i].mesh.position.z = 700 * Math.cos(a);
 
 		trash[i].mesh.rotation.x = Math.random() * (Math.PI * 2);
+		trash[i].mesh.rotation.y = Math.random() * (Math.PI * 2);
+		trash[i].mesh.rotation.z = Math.random() * (Math.PI * 2);
 
 		scene.add(trash[i].mesh);
 	}
