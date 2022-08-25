@@ -97,6 +97,22 @@ display:  none;
 height:  35%;
 }
 
+#levelDone {
+top: 0px;
+width: 100%;
+/*background-color:  red;*/
+/*padding: 10px;*/
+box-sizing: border-box;
+text-align: center;
+-moz-user-select: none;
+-webkit-user-select: none;
+-ms-user-select: none;
+user-select: none;
+pointer-events: none;
+z-index: 1;
+display:  none;
+height:  35%;
+}
 
 #text {
 background-color:  rgb(50,50,50,.8);

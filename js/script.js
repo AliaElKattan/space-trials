@@ -1,3 +1,5 @@
+
+
 var Colors = {
 	red:0xf25346,
 	white:0xd8d0d1,
@@ -33,10 +35,6 @@ createSky();
 
 document.addEventListener('mousemove', handleMouseMove, false);
 
-// document.addEventListener('mousedown', handleMouseDown, false);
-
-// document.addEventListener('mouseup', handleMouseUp, false);
-
 document.addEventListener('keydown', handleKeys, false);
 
 document.addEventListener('touchstart', function(e) {
@@ -49,6 +47,7 @@ if(down === 0) {
 		airplane.mesh.position.z = planeStartZ;
 		titleCard.style.display = "none";
 		cardCrashed.style.display = "none";
+		levelCard.style.display = "none";
 }
 
 }, false);
@@ -92,8 +91,6 @@ function createScene() {
 
 	scene = new THREE.Scene();
 
-	//scene.fog = new THREE.Fog(0xf7d9aa, 100, 950)
-
 	//camera
 	aspectRatio = WIDTH / HEIGHT;
 	fieldOfView = 65;
@@ -106,12 +103,9 @@ function createScene() {
 		farPlane
 		);
 
-
 	camera.position.x = camStartX;
 	camera.position.y = camStartY;
 	camera.position.z = camStartZ;
-
-
 
 	//renderer
 	renderer = new THREE.WebGLRenderer({
@@ -142,17 +136,6 @@ function handleWindowResize() {
 }
 
 
-function handleKeys(event) {
-
-	if(event.keyCode === 88) {
-		down = 1;
-		airplane.mesh.position.x = 0;
-		airplane.mesh.position.y = planeStartY;
-		airplane.mesh.position.z = planeStartZ;
-		titleCard.style.display = "none";
-		cardCrashed.style.display = "none";
-	}
-}
 
 
 //lights
@@ -367,15 +350,6 @@ var AirPlane = function() {
 	cockpit.castShadow = true;
 	cockpit.receiveShadow = true;
 	this.mesh.add(cockpit);
-	
-	// geomCockpit.vertices[4].y-=10;
-	// geomCockpit.vertices[4].z+=20;
-	// geomCockpit.vertices[5].y-=10;
-	// geomCockpit.vertices[5].z-=20;
-	// geomCockpit.vertices[6].y+=30;
-	// geomCockpit.vertices[6].z+=20;
-	// geomCockpit.vertices[7].y+=30;
-	// geomCockpit.vertices[7].z-=20;
 
 	var cockpit = new THREE.Mesh(geomCockpit, matCockpit);
 	cockpit.castShadow = true;
@@ -483,31 +457,54 @@ Trash = function() {
 }
 
 let trash;
-let ntrash = 200;
+let ntrash;
+
+trash = new Array();
 
 function createTrash(){
 
-	trash = new Array(ntrash);
+	//rewrite
+
+	if(level === 1) ntrash = 50;
+	if(level === 2) ntrash = 100;
+	if(level === 3) ntrash = 200;
+
+	let prev = trash.length;
+
+	// trash = new Array(ntrash);
 
 	let stepAngle = Math.PI*2 / ntrash;
 
-	for(let i=0;i<=ntrash;i++) {
-		trash[i] = new Trash();
+	for(let i=0;i<ntrash;i++) {
+		trash[prev+i] = new Trash();
 		let a = stepAngle * i;
+		let thisTrash= trash[prev+i].mesh;
 		
-		trash[i].mesh.position.y = 700 * Math.sin(a);
-		trash[i].mesh.position.x = -650 + Math.random() * 1300;
+		thisTrash.position.y = 700 * Math.sin(a);
+		thisTrash.position.x = -650 + Math.random() * 1300;
 
-		trash[i].mesh.position.z = 700 * Math.cos(a);
+		thisTrash.position.z = 700 * Math.cos(a);
 
-		trash[i].mesh.rotation.x = Math.random() * (Math.PI * 2);
-		trash[i].mesh.rotation.y = Math.random() * (Math.PI * 2);
-		trash[i].mesh.rotation.z = Math.random() * (Math.PI * 2);
+		thisTrash.rotation.x = Math.random() * (Math.PI * 2);
+		thisTrash.rotation.y = Math.random() * (Math.PI * 2);
+		thisTrash.rotation.z = Math.random() * (Math.PI * 2);
 
-		scene.add(trash[i].mesh);
+		scene.add(thisTrash);
 	}
 
 }
+
+function updateTrash() {
+
+	for(let i=0;i<trash.length;i++) {
+		trash[i].mesh.rotation.x += Math.random() * .01;
+		trash[i].mesh.rotation.y += Math.random() * .01;
+		trash[i].mesh.rotation.z += Math.random() * .01;
+
+	}
+
+}
+
 
 
 //mouse move
@@ -536,6 +533,8 @@ function handleTouchMove(event) {
 
   	touchPos={x:tx,y:ty};
 }
+
+
 
 let down = 0;
 let exploded = 0;
@@ -596,11 +595,10 @@ let movePos = mousePos;
 
 let h = 650; // placeholder
 
-// let sa = Math.PI * 2 / 
 
 let step =  Math.PI*2 / 360;
-let ii = 3;
-let iii = -1;
+let ii = 2;
+let iii; // camera
 let a;
 let ac;
 
@@ -608,6 +606,7 @@ function updatePlane() {
 
 	a= ii* step;
 	ac = iii * step;
+	iii = ii - 4;
 
 	if(touch === 1) movePos = touchPos;
 	else movePos = mousePos;
@@ -616,28 +615,71 @@ function updatePlane() {
 	let targetX = normalize(movePos.x,-.75,.75,-100, 100);
 
 	if (down === 1) {
-	airplane.mesh.rotation.y = movePos.x * -.5;
+	airplane.mesh.rotation.y = movePos.x * -.1; //-.5
 
 	airplane.mesh.position.y = Math.sin(a + Math.PI/2) * 690;
 	airplane.mesh.position.z = Math.cos(a + Math.PI/2) * 690; //690
 
-	airplane.mesh.rotation.x = -1 * a;
-
+	airplane.mesh.rotation.x = -1 * a; 
+	
 
 	camera.position.y = (Math.sin(ac + Math.PI/2) * 700);
 	camera.position.z = (Math.cos(ac + Math.PI/2) * 700);
-	camera.position.x = airplane.mesh.position.x;
+	// camera.position.x = airplane.mesh.position.x;
 
 	camera.rotation.x = -1 * a;
 
 	airplane.mesh.position.x -= speed * (Math.tan(airplane.mesh.rotation.y));
+	airplane.mesh.position.x += movePos.x; 
 
 	ii+=.3;
-	iii += .3;
+	// iii += .3;
+
+	// console.log("ii: ", ii, " ,a: ", a);
+
+	if (a >= 2 && level === 1) {
+			down = 0;
+			level += 1;
+			createTrash();
+			levelCard.style.display = "block";
+	}
+
+	if(a>=4 && level === 2) {
+		down = 0;
+		level +=1;
+		createTrash();
+		levelCard.style.display = "block";
+	}
 
 }
 
 }
+
+function handleKeys(event) {
+
+	if(event.keyCode === 88) {
+		down = 1;
+		airplane.mesh.position.x = 0;
+		airplane.mesh.position.y = planeStartY;
+		airplane.mesh.position.z = planeStartZ;
+		titleCard.style.display = "none";
+		cardCrashed.style.display = "none";
+		levelCard.style.display = "none";	
+	}
+
+
+	if(event.keyCode === 37) {
+		movePos =- .1;
+		console.log("left pressed");
+	}
+
+	if(event.keyCode === 39) {
+		movePos=+ .1;
+		console.log("right pressed");
+	}
+
+}
+
 
 let speed = 2;
 function updateCamera(event) {
@@ -666,7 +708,7 @@ function normalize(v,vmin,vmax,tmin, tmax){
 
 }
 
-let titleCard, cardCrashed;
+let titleCard, cardCrashed, levelCard;
 let livesCounter;
 let lives = 3;
 
@@ -682,6 +724,7 @@ function loop() {
 	cardCrashed = document.getElementById("cardCrashed");
 	titleCard = document.getElementById("cardIntro");
 	livesCounter = document.getElementById("lives");
+	levelCard = document.getElementById("levelDone");
 
 	for ( let i = 0; i < intersects.length; i ++ ) {
 
@@ -704,8 +747,6 @@ function loop() {
 
 		distancetoPlane = Math.sqrt(Math.pow(objX-planeX,2)+Math.pow(objY-planeY,2)+Math.pow(objZ-planeZ,2))
 
-		// console.log(distancetoPlane);
-		// console.log("test");
 
 		if (distancetoPlane < 30) {
 			down = 0;
@@ -732,17 +773,17 @@ function loop() {
 
 			//restart position
 
-			airplane.mesh.position.x = 0;
-			airplane.mesh.position.y = planeStartY;
-			airplane.mesh.position.z = planeStartZ;
-
-
+			// airplane.mesh.position.x = 0;
+			// airplane.mesh.position.y = planeStartY;
+			// airplane.mesh.position.z = planeStartZ;
+			ii = 3;
 
 		}
 	}
 
 	updatePlane();
 	updateCamera();
+	updateTrash();
 
 	// render the scene
 	renderer.render(scene, camera);
