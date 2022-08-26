@@ -1,5 +1,5 @@
 
-
+//add theme colors here
 var Colors = {
 	red:0xf25346,
 	white:0xd8d0d1,
@@ -14,6 +14,7 @@ let touch = 0;
 let start = 0;
 let level = 1;
 
+//functions to run on load
 window.addEventListener('load', init, false);
 
 function init(event) {
@@ -40,6 +41,7 @@ document.addEventListener('keydown', handleKeys, false);
 document.addEventListener('touchstart', function(e) {
   touch = 1;
 
+//every time x is clicked i hide text divs and restart player positions, replace with more thorough logic dependent on stage of game
 if(down === 0) {
   down = 1;
 		airplane.mesh.position.x = 0;
@@ -67,7 +69,7 @@ loop();
 }
 
 
-
+//basics of initaiting a three.js scene
 let scene, 
 		camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH,
 		renderer, container;
@@ -85,6 +87,7 @@ function onPointerMove( event ) {
 
 }
 
+//variables for camera start position, this isnt that important anymore cause it's fixed to airplane pos
 let camStartX = 0, camStartY = 690, camStartZ = 50;
 
 function createScene() {
@@ -98,6 +101,7 @@ function createScene() {
 	fieldOfView = 65;
 	nearPlane = 1;
 	farPlane = 10000;
+
 	camera = new THREE.PerspectiveCamera(
 		fieldOfView,
 		aspectRatio,
@@ -105,6 +109,7 @@ function createScene() {
 		farPlane
 		);
 
+//iniating camera start positions
 	camera.position.x = camStartX;
 	camera.position.y = camStartY;
 	camera.position.z = camStartZ;
@@ -149,39 +154,10 @@ function createLights() {
 //hemisphere light first par sky color, second par ground color, third intensity of light
 hemisphereLight = new THREE.HemisphereLight(0xffffff,0x000000, 1);
 
-//directional light
-// shadowLight = new THREE.DirectionalLight(0xffffff, 0.9);
-
-// shadowLight.position.set(150,350,350);
-
-// shadowLight.castShadow = true;
-
-// shadowLight.shadow.camera.left = -400;
-// 	shadowLight.shadow.camera.right = 400;
-// 	shadowLight.shadow.camera.top = 400;
-// 	shadowLight.shadow.camera.bottom = -400;
-// 	shadowLight.shadow.camera.near = 1;
-// 	shadowLight.shadow.camera.far = 1000;
-
-// // define the visible area of the projected shadow
-// 	shadowLight.shadow.camera.left = -400;
-// 	shadowLight.shadow.camera.right = 400;
-// 	shadowLight.shadow.camera.top = 400;
-// 	shadowLight.shadow.camera.bottom = -400;
-// 	shadowLight.shadow.camera.near = 1;
-// 	shadowLight.shadow.camera.far = 1000;
-
-// // define the resolution of the shadow; the higher the better, 
-// // but also the more expensive and less performant
-// 	shadowLight.shadow.mapSize.width = 2048;
-// 	shadowLight.shadow.mapSize.height = 2048;
-
-
+//can give the whole scene a tint of a certain color (e.g. light or blue light), if you used add it to scene
 // ambientLight = new THREE.AmbientLight(0x151752, 1);
-
 	
 scene.add(hemisphereLight);
-// scene.add(shadowLight);
 // scene.add(ambientLight);
 }
 
@@ -223,46 +199,7 @@ function createPlanet(){
 	scene.add(planet.mesh);
 }
 
-Cloud = function(){
-	// Create an empty container that will hold the different parts of the cloud
-	this.mesh = new THREE.Object3D();
-	
-	// create a cube geometry;
-	// this shape will be duplicated to create the cloud
-	var geom = new THREE.BoxGeometry(20,20,20);
-	
-	// create a material; a simple white material will do the trick
-	var mat = new THREE.MeshPhongMaterial({
-		color:Colors.white,  
-	});
-	
-	// duplicate the geometry a random number of times
-	var nBlocs = 3+Math.floor(Math.random()*3);
-	for (var i=0; i<nBlocs; i++ ){
-		
-		// create the mesh by cloning the geometry
-		var m = new THREE.Mesh(geom, mat); 
-		
-		// set the position and the rotation of each cube randomly
-		m.position.x = i*15;
-		m.position.y = Math.random()*10;
-		m.position.z = Math.random()*10;
-		m.rotation.z = Math.random()*Math.PI*2;
-		m.rotation.y = Math.random()*Math.PI*2;
-		
-		// set the size of the cube randomly
-		var s = .1 + Math.random()*.9;
-		m.scale.set(s,s,s);
-		
-		// allow each cube to cast and to receive shadows
-		m.castShadow = true;
-		m.receiveShadow = true;
-		
-		// add the cube to the container we first created
-		this.mesh.add(m);
-	} 
-}
-
+//stars are now yellow cubes far in the distance
 Star = function(){
 	// create a cube geometry;
 	// this shape will be duplicated to create the cloud
@@ -290,7 +227,7 @@ Sky = function(){
 	// we need to place them according to a uniform angle
 	var stepAngle = Math.PI*2 / this.nStars;
 	
-	// create the clouds
+	// add stars at random x, y locations within frame, and a range of z locations to create some depth / variation
 	for(var i=0; i<this.nStars; i++){
 		var c = new Star();
 
@@ -318,11 +255,9 @@ else {
 
 }
 		
-		// we also set a random scale for each cloud
 		var s = 1+Math.random()*2;
 		c.mesh.scale.set(s,s,s);
 
-		// do not forget to add the mesh of each cloud in the scene
 		this.mesh.add(c.mesh);  
 	}  
 
@@ -330,8 +265,6 @@ else {
 
 }
 
-// Now we instantiate the sky and push its center a bit
-// towards the bottom of the screen
 
 var sky;
 
@@ -342,6 +275,9 @@ function createSky(){
 }
 
 var AirPlane = function() {
+
+	//this is taken from The Aviator, so the code below draws a proper plane
+	//but i commented out adding all the smaller element to the scene and just left it as adding a standard cube.
 	
 	this.mesh = new THREE.Object3D();
 	
@@ -400,17 +336,12 @@ var AirPlane = function() {
 	blade.position.set(8,0,0);
 	blade.castShadow = true;
 	blade.receiveShadow = true;
-	// this.propeller.add(blade);
 	this.propeller.position.set(50,0,0);
-	// this.mesh.add(this.propeller);
 };
 
 
-// var airplane;
 
-// let planeStartY = 50;
-// let planeStartZ = 140;
-
+//start position of plane
 let planeStartY = 650;
 let planeStartZ = 0;
 
@@ -421,21 +352,21 @@ function createPlane(){
 	airplane.mesh.position.y = planeStartY;
 	airplane.mesh.position.z = planeStartZ;
 
-	//placeholder, face direction of camera
-	// airplane.mesh.rotation.y = -80;
-
 
 	scene.add(airplane.mesh);
 }
 
+
+//debris
 Trash = function() {
 
 	let size = Math.random() * 20;
 	let obj = Math.random() * 5;
 	let geom;
 
-	// rewrite this 
+	// rewrite this (switch case)
 
+	//randomly choosing from a number of three.js shapes
 	if(obj < 1) {geom = new THREE.DodecahedronGeometry(size,0);}
 	if(obj >= 1 && obj < 2) {geom = new THREE.CylinderGeometry( size, 20, 4, 8 );}
 	if(obj >= 2 && obj < 3) {geom = new THREE.TorusGeometry( size, 5, 16, 100 );}
@@ -445,15 +376,12 @@ Trash = function() {
 
 	// create the material 
 	let mat = new THREE.MeshPhongMaterial({
+		//randomize colors! for a more coherent theme can have a list of theme colors to randomly choose from
 		color:Math.random() * 0xffffff,
 		opacity:1,
 		shading:THREE.FlatShading,
 	});
 
-	// geom.vertices[1].x += Math.random() * 40;
-
-	// To create an object in Three.js, we have to create a mesh 
-	// which is a combination of a geometry and some material
 	this.mesh = new THREE.Mesh(geom, mat);
 
 	this.mesh.receiveShadow = true; 
@@ -468,6 +396,12 @@ function createTrash(){
 
 	//rewrite
 
+	//createTrash creates a different number of debris item depending on what level we're in
+	//these are additively accumulated. so at level 1, there's 50 debris items. when createTrash is called again
+	//in level 2, it adds 100 debris items, so there is a total of 150. etc
+
+	//change these numbers depending on how difficult you want each level to be, and how much things escalate
+
 	if(level === 1) ntrash = 50;
 	if(level === 2) ntrash = 100;
 	if(level === 3) ntrash = 200;
@@ -476,10 +410,18 @@ function createTrash(){
 
 	// trash = new Array(ntrash);
 
+	//this is the interval we place debris at. PI * 2 is the circumference of any circle. we want debris all around the circumference
+	//so the interval is Math.PI divided by the number of debris items placed
+
 	let stepAngle = Math.PI*2 / ntrash;
+
+	//function for placing itmes around a sphere is radius & sin(angle)
 
 	for(let i=0;i<ntrash;i++) {
 		trash[prev+i] = new Trash();
+
+		//a is the angle around the sphere, and it is the product of the interval trash are placed at * the ID number of debris
+		//for ex., debris 1 will be at stepAngle, debris 2 at stepAngle * 2, etc.
 		let a = stepAngle * i;
 		let thisTrash= trash[prev+i].mesh;
 		
@@ -488,6 +430,8 @@ function createTrash(){
 
 		thisTrash.position.z = 700 * Math.cos(a);
 
+		//random rotation of orientation of debris
+		//less important now that updateTrash is added and they're all constantly rotating anyway
 		thisTrash.rotation.x = Math.random() * (Math.PI * 2);
 		thisTrash.rotation.y = Math.random() * (Math.PI * 2);
 		thisTrash.rotation.z = Math.random() * (Math.PI * 2);
@@ -499,7 +443,9 @@ function createTrash(){
 
 function updateTrash() {
 
+//rotating all debris items in place at random x,y,z intervals
 	for(let i=0;i<trash.length;i++) {
+		//the 0.015 just represents the speed of rotation, and is a result of trial and error of what speed looked fine
 		trash[i].mesh.rotation.x += Math.random() * .015;
 		trash[i].mesh.rotation.y += Math.random() * .015;
 		trash[i].mesh.rotation.z += Math.random() * .015;
@@ -515,6 +461,7 @@ function updateTrash() {
 var mousePos={x:0, y:0};
 let touchPos={x:0, y:0};
 
+//scale mouse movement across the screen width and height into a number between 0 and 1
 function handleMouseMove(event) {
 	//horizontal axis
 	var tx = -1 + (event.clientX / WIDTH)*2;
@@ -529,6 +476,7 @@ function handleMouseMove(event) {
 
 let touchX, touchY;
 
+//same but for touch movement
 function handleTouchMove(event) {
 	touchX = event.touches[0].clientX;
   	touchY = event.touches[0].clientY;
@@ -544,40 +492,7 @@ function handleTouchMove(event) {
 let down = 0;
 let exploded = 0;
 
-// function handleMouseDown(event) {
-// 	titleCard = document.getElementById("cardIntro");
-
-// 	let geom = new THREE.DodecahedronGeometry(10,0);
-	
-
-// 	// create the material 
-// 	let mat = new THREE.MeshPhongMaterial({
-// 		color:Colors.brownDark,
-// 		opacity:1,
-// 		shading:THREE.FlatShading,
-// 	});
-
-// 	if(titleCard.style.display === "none") {
-// 			down = 1;
-// 	}
-
-// 	exploded = 1;
-
-// 	for(let i=0;i<=ntrash;i++) {
-
-// 		// trash[i].mesh.scale.set(.5,.5,.5);
-
-// 		for(let j=0;j<=10;j++) {
-// 			let d = new THREE.Mesh(geom,mat);
-// 			trash[i].mesh.add(d);
-// 			// d.position.x = trash[i].mesh.position.x+Math.random()*10;
-// 		}
-
-
-// 	}
-
-// }
-
+//not using this anymore, but was a function for more smaller debris items to come out when a collision occurs. not great!
 function explosion(){
 
 	let expX, expY, expZ;
@@ -600,18 +515,26 @@ let movePos = mousePos;
 
 let h = 650; // placeholder
 
-
+//as explained in createTrash, this is the size of the step we move in around the planet
 let step =  Math.PI*2 / 360;
-let ii = 2;
-let iii; // camera
-let a;
-let ac;
+
+//the number of these steps we're taking
+let stepCount = 1;
+let stepCount_cam; // camera
+
+//angle interval * the number of times you move in it, step * stepCount
+let stepDistance;
+let stepDistance_cam;
 
 function updatePlane() {
 
-	a= ii* step;
-	ac = iii * step;
-	iii = ii - 4;
+	//where player is = step size * number of times you've taken that step
+	stepDistance= stepCount * step;
+
+	//same for camera
+	stepDistance_cam = stepCount_cam * step;
+
+	stepCount_cam = stepCount - 4; //keep camera a little behind the player
 
 	if(touch === 1) movePos = touchPos;
 	else movePos = mousePos;
@@ -622,44 +545,44 @@ function updatePlane() {
 	if (down === 1) {
 	airplane.mesh.rotation.y = movePos.x * -.1; //-.5
 
-	airplane.mesh.position.y = Math.sin(a + Math.PI/2) * 690;
-	airplane.mesh.position.z = Math.cos(a + Math.PI/2) * 690; //690
+	//690 is radius of Earth + distance from earth
+	//explanation of this math in words is in google doc
+	airplane.mesh.position.y = Math.sin(stepDistance + Math.PI/2) * 690;
+	airplane.mesh.position.z = Math.cos(stepDistance + Math.PI/2) * 690; 
 
-	airplane.mesh.rotation.x = -1 * a; 
+	airplane.mesh.rotation.x = -1 * stepDistance; 
 	
+	//camera moves at a slightly bigger orbit (longer distance from earth) to be slightly above the player
+	camera.position.y = (Math.sin(stepDistance_cam + Math.PI/2) * 700);
+	camera.position.z = (Math.cos(stepDistance_cam + Math.PI/2) * 700);
 
-	camera.position.y = (Math.sin(ac + Math.PI/2) * 700);
-	camera.position.z = (Math.cos(ac + Math.PI/2) * 700);
-	// camera.position.x = airplane.mesh.position.x;
+	camera.rotation.x = -1 * stepDistance;
 
-	camera.rotation.x = -1 * a;
-
+	//move in direction of the orientation
 	airplane.mesh.position.x -= speed * (Math.tan(airplane.mesh.rotation.y));
 
 
 	console.log(airplane.mesh.position.x);
 	// airplane.mesh.position.x += movePos.x; 
 
-	ii+=.3;
-	// iii += .3;
+	stepCount+=.3;
 
-	// console.log("ii: ", ii, " ,a: ", a);
-
-	if (a >= 2 && level === 1) {
+//when at a particular distance, move to the next level, create more debris, and show the card for that level (e.g., "level 1 done!")
+	if (stepDistance >= 2 && level === 1) {
 			down = 0;
 			level += 1;
 			createTrash();
 			level1Card.style.display = "block";
 	}
 
-	if(a>=4 && level === 2) {
+	if(stepDistance>=4 && level === 2) {
 		down = 0;
 		level +=1;
 		createTrash();
 		level2Card.style.display = "block";
 	}
 
-	if(a>=6 && level === 3) {
+	if(stepDistance>=6 && level === 3) {
 		down = 0;
 		level +=1;
 		level2Card.style.display = "block"
@@ -729,6 +652,7 @@ let lives = 3;
 
 function loop() {
 
+//handle collisions. raycaster points a laser like thing out and checks if it collided with any object
 	raycaster.setFromCamera( pointer, camera );
 
 	// raycaster.set(airplane.mesh.position,direction)
@@ -758,13 +682,14 @@ function loop() {
 		planeY = airplane.mesh.position.y;
 		planeZ = airplane.mesh.position.z;
 
-		//distance formula
+		//distance formula for collision
 
 		distancetoCam = Math.sqrt(Math.pow(objX-camX,2)+Math.pow(objY-camY,2)+Math.pow(objZ-camZ,2));
 
 		distancetoPlane = Math.sqrt(Math.pow(objX-planeX,2)+Math.pow(objY-planeY,2)+Math.pow(objZ-planeZ,2))
 
 
+//when collision happens, decrease number of lives (hearts)
 		if (distancetoPlane < 30) {
 			down = 0;
 
@@ -788,11 +713,6 @@ function loop() {
 			camera.rotation.x = 0;
 
 
-			//restart position
-
-			// airplane.mesh.position.x = 0;
-			// airplane.mesh.position.y = planeStartY;
-			// airplane.mesh.position.z = planeStartZ;
 			ii = 3;
 
 		}
