@@ -7,7 +7,7 @@ var Colors = {
 	pink:0xF5986E,
 	brownDark:0x23190f,
 	blue:0x121d80,
-	yellow: 0xffd53d,
+	yellow: 0xffff00,
 };
 
 let touch = 0;
@@ -47,7 +47,9 @@ if(down === 0) {
 		airplane.mesh.position.z = planeStartZ;
 		titleCard.style.display = "none";
 		cardCrashed.style.display = "none";
-		levelCard.style.display = "none";
+		level1Card.style.display = "none";
+		level2Card.style.display = "none";
+		level3Card.style.display = "none";
 }
 
 }, false);
@@ -145,7 +147,7 @@ var hemisphereLight, shadowLight;
 function createLights() {
 
 //hemisphere light first par sky color, second par ground color, third intensity of light
-hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, 1);
+hemisphereLight = new THREE.HemisphereLight(0xffffff,0x000000, 1);
 
 //directional light
 // shadowLight = new THREE.DirectionalLight(0xffffff, 0.9);
@@ -175,12 +177,12 @@ hemisphereLight = new THREE.HemisphereLight(0xaaaaaa,0x000000, 1);
 // 	shadowLight.shadow.mapSize.height = 2048;
 
 
-ambientLight = new THREE.AmbientLight(0x151752, 1);
+// ambientLight = new THREE.AmbientLight(0x151752, 1);
 
 	
 scene.add(hemisphereLight);
 // scene.add(shadowLight);
-scene.add(ambientLight);
+// scene.add(ambientLight);
 }
 
 Planet = function(){
@@ -264,11 +266,12 @@ Cloud = function(){
 Star = function(){
 	// create a cube geometry;
 	// this shape will be duplicated to create the cloud
-	let geom = new THREE.BoxGeometry(10,10,10);
+	let geom = new THREE.BoxGeometry(12,12,12);
 	
 	// create a material; a simple white material will do the trick
 	 mat = new THREE.MeshPhongMaterial({
 		color:Colors.yellow,  
+		shading:THREE.FlatShading
 	});
 	
 	this.mesh = new THREE.Mesh(geom, mat);
@@ -497,9 +500,9 @@ function createTrash(){
 function updateTrash() {
 
 	for(let i=0;i<trash.length;i++) {
-		trash[i].mesh.rotation.x += Math.random() * .01;
-		trash[i].mesh.rotation.y += Math.random() * .01;
-		trash[i].mesh.rotation.z += Math.random() * .01;
+		trash[i].mesh.rotation.x += Math.random() * .015;
+		trash[i].mesh.rotation.y += Math.random() * .015;
+		trash[i].mesh.rotation.z += Math.random() * .015;
 
 	}
 
@@ -519,6 +522,8 @@ function handleMouseMove(event) {
 	//vertical axis, inverse the formula
 	var ty = 1 - (event.clientY / HEIGHT)*2;
 	mousePos = {x:tx, y:ty};
+
+	console.log(mousePos);
 
 }
 
@@ -630,7 +635,10 @@ function updatePlane() {
 	camera.rotation.x = -1 * a;
 
 	airplane.mesh.position.x -= speed * (Math.tan(airplane.mesh.rotation.y));
-	airplane.mesh.position.x += movePos.x; 
+
+
+	console.log(airplane.mesh.position.x);
+	// airplane.mesh.position.x += movePos.x; 
 
 	ii+=.3;
 	// iii += .3;
@@ -641,16 +649,21 @@ function updatePlane() {
 			down = 0;
 			level += 1;
 			createTrash();
-			levelCard.style.display = "block";
+			level1Card.style.display = "block";
 	}
 
 	if(a>=4 && level === 2) {
 		down = 0;
 		level +=1;
 		createTrash();
-		levelCard.style.display = "block";
+		level2Card.style.display = "block";
 	}
 
+	if(a>=6 && level === 3) {
+		down = 0;
+		level +=1;
+		level2Card.style.display = "block"
+	}
 }
 
 }
@@ -664,7 +677,9 @@ function handleKeys(event) {
 		airplane.mesh.position.z = planeStartZ;
 		titleCard.style.display = "none";
 		cardCrashed.style.display = "none";
-		levelCard.style.display = "none";	
+		level1Card.style.display = "none";	
+		level2Card.style.display = "none";	
+		level3Card.style.display = "none";	
 	}
 
 
@@ -708,7 +723,7 @@ function normalize(v,vmin,vmax,tmin, tmax){
 
 }
 
-let titleCard, cardCrashed, levelCard;
+let titleCard, cardCrashed;
 let livesCounter;
 let lives = 3;
 
@@ -724,7 +739,9 @@ function loop() {
 	cardCrashed = document.getElementById("cardCrashed");
 	titleCard = document.getElementById("cardIntro");
 	livesCounter = document.getElementById("lives");
-	levelCard = document.getElementById("levelDone");
+	level1Card = document.getElementById("level1Done");
+	level2Card = document.getElementById("level2Done");
+	level3Card = document.getElementById("level3Done");
 
 	for ( let i = 0; i < intersects.length; i ++ ) {
 
@@ -756,14 +773,14 @@ function loop() {
 			lives-= 1;
 
 			if(lives === 2) {
-				livesCounter.innerHTML = "<h2>LIVES: 2<h2>";
+				livesCounter.innerHTML = "<h2>&hearts; &hearts;<h2>";
 			}
 
-			if(lives === 1) livesCounter.innerHTML = "<h2>LIVES: 1<h2>";
+			if(lives === 1) livesCounter.innerHTML = "<h2>&hearts;<h2>";
 
 			if(lives === 0) {
 				lives = 3;
-				livesCounter.innerHTML = "<h2>LIVES: 3<h2>";
+				livesCounter.innerHTML = "<h2>&hearts; &hearts; &hearts;<h2>";
 			} 
 
 			// intersects[ i ].object.material.color.set( 0xff0000 );

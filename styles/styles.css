@@ -1,3 +1,7 @@
+
+@import url('https://fonts.googleapis.com/css?family=Coda+Caption:800');
+
+
 #world {
 /*position:  absolute;*/
 width: 100%;
@@ -27,15 +31,17 @@ text-align: center;
 user-select: none;
 pointer-events: none;
 z-index: 1;
+color: rgb(220,0,0);
 }
 
 #lives h2 {
-color:  white;
-font-family:  Courier New, monospace;
+color: rgb(220,0,0);
+font-family: 'Coda Caption', sans-serif;
 /*font-size:  1rem;*/
 position: absolute;
 text-align:  left;
 padding-left:  1.8rem;
+font-size:  1.8rem;
 }
 
 #settings {
@@ -55,7 +61,7 @@ z-index: 2;
 
 #settings p {
 color:  white;
-font-family:  Courier New, monospace;
+font-family: 'Coda Caption', sans-serif;
 font-size:  1.3rem;
 position: absolute;
 text-align:  right;
@@ -97,7 +103,7 @@ display:  none;
 height:  35%;
 }
 
-#levelDone {
+#level1Done, #level2Done, #level3Done {
 top: 0px;
 width: 100%;
 /*background-color:  red;*/
@@ -115,27 +121,40 @@ height:  35%;
 }
 
 #text {
-background-color:  rgb(50,50,50,.8);
+background-color:  rgb(255,255,255,0);
 position: absolute;
 text-align:  center;
-margin-left:  25%;
-width:  50%;
-height:  40%;
+margin-left:  27.5%;
+width:  46%;
+height:  50%;
 margin-top: 10%;
 margin-bottom:  20%;
 padding-top: 1%;
+color: black;
 }
 
 
-#text h3, p{
+#text h1, h3, p {
 	padding-left: 5%;
 	padding-right:  5%;
-	color:  white;
-	font-family:  Courier New, monospace;
+	color:  black;
+	font-family: 'Coda Caption', sans-serif;
+	transform: perspective(300px) scaleY(1.5) rotateX(35deg);
+	transform-style: preserve-3d; 
+	--layer-depth: 0.32em;
+	text-shadow: 0.06em 0 #ffc532, 0.06em 0.06em #ffc532, 0 0.06em #ffc532, -0.06em 0.06em #ffc532, -0.06em 0 #ffc532, -0.06em -0.06em #ffc532, 0 -0.06em #ffc532, 0.06em -0.06em #ffc532;	
+
+
+}
+
+
+#text h1 {
+	font-size:  3rem;
+	/*transform: perspective(300px) scaleY(1.5) rotateX(-40deg);*/
 }
 
 #text h3 {
-	font-size:  1.8rem;
+	font-size:  1.5rem;
 }
 
 #text p {
