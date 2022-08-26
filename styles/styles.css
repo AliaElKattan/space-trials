@@ -45,7 +45,7 @@ font-size:  1.8rem;
 }
 
 #settings {
-background-color:  red;
+/*background-color:  red;*/
 top: 0px;
 width: 100%;
 /*padding: 10px;*/
@@ -60,14 +60,12 @@ z-index: 2;
 }
 
 #settings p {
-color:  white;
+color:  black;
 font-family: 'Coda Caption', sans-serif;
 font-size:  1.3rem;
 position: absolute;
 text-align:  right;
 padding-left:  90%;
-
-
 }
 
 #card{
